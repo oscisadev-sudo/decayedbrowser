@@ -9,15 +9,17 @@ ipcRenderer.send("unmaxized",'true')
 ipcRenderer.on("unmaxized-reply",(error,data) => {
   TopBarOpen()
   AppWinState = "no-full"
-  document.getElementById("nav-tab").className = "nav-tab-full"
-  ipcRenderer.send("maxized",'true')
+  var tb = document.getElementById('topbar')
+  if (tb) tb.classList.add('nav-tab-full')
+  ipcRenderer.send("maxized","true")
 })
 
 ipcRenderer.on("maxized-reply",(error,data) => {
   TopBarClose()
   AppWinState = "full"
-  document.getElementById("nav-tab").className = ""
-  ipcRenderer.send("unmaxized",'true')
+  var tb = document.getElementById('topbar')
+  if (tb) tb.classList.remove('nav-tab-full')
+  ipcRenderer.send("unmaxized","true")
 })
 
 function CloseAPP() {

@@ -8,35 +8,66 @@
     <script defer src="2.js"></script>
   </head>
   <body>
-    <div id="body-box" >
-    <section onmouseenter=TopBarOpen() onmouseleave=TopBarClose() id="topbar">
-      <div id="nav-tab">
-      <button onclick="BackWeb()"><img src="img/pageback.png" ></button>
-      <button onclick="ReloadWeb()"><img src="img/pagerelode.png" ></button>
-      <button onclick="NextWeb()" ><img src="img/pagenext.png" ></button>
-      <input id="url-bar" type="text" >
-      <button onclick="confirm('bookmark')" ><img src="img/pagebook.png" ></button>
-      <button onclick="SplitScreen()" ><img id="split-ico" class="off" src="img/screensplit.png" ></button>
-        <div id="win-tray">
-          <button onclick="minimizeApp()"><img src="img/backmini.png" ></button>
-          <button onclick="maximizeApp()"><img src="img/backmax.png" ></button>
-          <button onclick="CloseAPP()"><img src="img/backwin.png" ></button>
-        </div>
-    </div>
-    </section>
+    <div id="body-box">
+      <div class="app-shell">
+        <!-- Left vertical sidebar (Arc+Comet hybrid) -->
+        <aside id="sidebar" onmouseenter="leftBarOpenTab()" onmouseleave="LeftBarClose()">
+          <div id="sidebar-top">
+            <button class="icon-btn" id="btn-add-tab" onclick="AddTabs()"><img src="img/addtab.png" alt="add"></button>
+          </div>
+          <nav id="tabs">
+            <div class="tab active" id="tab-home"><img src="img/GrimHome.png" alt="home"></div>
+          </nav>
+          <div id="sidebar-bottom">
+            <button class="icon-btn" onclick="confirm('bookmark')"><img src="img/pagebook.png" alt="bookmark"></button>
+          </div>
+        </aside>
 
-    <section onmouseenter=leftBarOpenTab() onmouseleave=LeftBarClose() id="leftbar">
-      <div id="tab-bar">
-          <div class="tab"><button id="btn-add-tab" onclick="AddTabs()"><img  src="img/addtab.png"></button></div>
-          
+        <!-- Main content area -->
+        <main id="main-area">
+          <header id="topbar" onmouseenter="TopBarOpen()" onmouseleave="TopBarClose()">
+            <div id="topbar-inner">
+              <div id="nav-left">
+                <button class="icon-btn" onclick="BackWeb()"><img src="img/pageback.png" alt="back"></button>
+                <button class="icon-btn" onclick="ReloadWeb()"><img src="img/pagerelode.png" alt="reload"></button>
+                <button class="icon-btn" onclick="NextWeb()"><img src="img/pagenext.png" alt="next"></button>
+              </div>
+
+              <div id="nav-center">
+                <!-- Compact topbar prompt uses the same visual language as the center prompt -->
+                <div class="prompt-panel topbar" id="top-pill">
+
+                  <input class="prompt-input" id="url-bar" type="text" placeholder="Search or enter address" />
+
+                </div>
+              </div>
+
+              <div id="nav-right">
+                <div id="win-tray">
+                
+
+                </div>
+              </div>
+            </div>
+          </header>
+
+          <section id="screen">
+            <section class="window" id="scr-1">
+              <!-- Centered home prompt (matches attached image) -->
+              <div class="center-prompt" id="home-prompt">
+                <div class="prompt-panel">
+
+
+                  <input class="prompt-input" id="home-search" placeholder="Ask anything. Type @ for mentions and / for shortcuts." />
+
+                </div>
+              </div>
+            </section>
+
+            <section class="window" id="scr-2" style="display:none; width:0%"><webview id="ws-2" src="components/homegrimapppage.html" allowpopups></webview></section>
+          </section>
+        </main>
       </div>
-    </section>
-  
-    <section id="screen">
-      <section class="window" id="scr-1" ><webview  id="ws-1" src="components/homegrimapppage.html" allowpopups  ></webview></section>
-     
-      <section  class="window" id="scr-2" ><webview id="ws-2" src="components/homegrimapppage.html" allowpopups  ></webview></section>
-    </section>
-  </div>
+    </div>
   </body>
 </html>

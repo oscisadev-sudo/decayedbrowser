@@ -3,8 +3,8 @@ var active_screen_win = "ws-1"
 var scr_1_weburl = ""
 var scr_2_weburl = ""
 
-document.getElementById("nav-tab").style.display = "none"
-document.getElementById("tab-bar").style.display = "none"
+if (document.getElementById("nav-tab")) document.getElementById("nav-tab").style.display = "none"
+if (document.getElementById("tab-bar")) document.getElementById("tab-bar").style.display = "none"
 
 
 
@@ -48,45 +48,39 @@ WebView.addEventListener('dom-ready', () => {
 
 
 function leftBarOpenTab(){
-  
-    var left = document.getElementById("screen")
-    left.style.width = 'calc(100vw - 56px - 2px)'
-    document.getElementById("tab-bar").style.display = "flex"
-    document.getElementById('leftbar').style.width = "calc(56px - 12px)"
+  // expand the sidebar for hover interactions
+  var sidebar = document.getElementById('sidebar')
+  if (sidebar) sidebar.style.width = '140px'
+  var tabs = document.getElementById('tabs')
+  if (tabs) tabs.style.opacity = '1'
 }
 
 function TopBarOpen(){
-    var left = document.getElementById("screen")
-    left.style.height = 'calc(100vh - 45px - 2px)'
-    
-    document.getElementById('topbar').style.height = "calc(45px - 12px)"
-    document.getElementById("nav-tab").style.display = "flex"
-    document.getElementById('topbar').className = "topbar-drag"
+  var screen = document.getElementById('screen')
+  if (screen) screen.style.height = 'calc(100vh - 56px)'
+  var tb = document.getElementById('topbar')
+  if (tb) tb.style.height = '64px'
+  if (tb) tb.classList.add('topbar-drag')
 }
 
 
 
 async function LeftBarClose(){
-    var left = document.getElementById("screen")
-    left.style.width = 'calc(100vw - 26px)'
-    document.getElementById('leftbar').style.width = "12px"
-    document.getElementById("tab-bar").style.display = "none"
+  var sidebar = document.getElementById('sidebar')
+  if (sidebar) sidebar.style.width = '92px'
+  var tabs = document.getElementById('tabs')
+  if (tabs) tabs.style.opacity = '0.95'
     
 }
 
 function TopBarClose(){
-  
-    if (AppWinState == "full"){
-      var left = document.getElementById("screen")
-      left.style.height = 'calc(100vh - 26px)'
-      
-      document.getElementById('topbar').style.height = "12px"
-      document.getElementById("nav-tab").style.display = "none"
-      document.getElementById('nav-tab').className = ""  
-    }
-    
-  
-    
+  if (AppWinState == "full"){
+    var screen = document.getElementById('screen')
+    if (screen) screen.style.height = 'calc(100vh - 26px)'
+    var tb = document.getElementById('topbar')
+    if (tb) tb.style.height = '48px'
+    if (tb) tb.classList.remove('topbar-drag')
+  }
 }
 
 function SplitScreen(){
@@ -117,12 +111,45 @@ function SplitScreen(){
 
 
 function AddTabs(){
-  
-  var rand_term_hex = crypto.randomUUID()
-  var a = `<div class="tab"><button onclick="alert('${rand_term_hex}')" ><img  src="img/tabdefault.png"></button></div>`
-  
-  
-  document.getElementById("tab-bar").innerHTML = document.getElementById("tab-bar").innerHTML + a
+  // Create a new sidebar tab and an associated webview.
+  var id = 'tab-' + (document.querySelectorAll('#tabs .tab').length + 1)
+  var viewId = 'wv-' + crypto.randomUUID().split('-')[0]
+
+  // sidebar tab element
+  var tab = document.createElement('div')
+  tab.className = 'tab'
+  tab.id = id
+  tab.innerHTML = `<img src="img/tabdefault.png" alt="tab">`
+  tab.addEventListener('click', function(){ activateTab(id, viewId) })
+
+  document.getElementById('tabs').appendChild(tab)
+
+  // create webview container
+  var win = document.createElement('section')
+  win.className = 'window'
+  win.id = viewId
+  win.innerHTML = `<webview id="${viewId}-webview" src="components/homegrimapppage.html" allowpopups></webview>`
+  document.getElementById('screen').appendChild(win)
+
+  // activate new tab
+  activateTab(id, viewId)
+}
+
+function activateTab(tabId, viewId){
+  // deactivate sidebar tabs
+  document.querySelectorAll('#tabs .tab').forEach(t => t.classList.remove('active'))
+  var tab = document.getElementById(tabId)
+  if (tab) tab.classList.add('active')
+
+  // hide all windows and show selected
+  document.querySelectorAll('#screen .window').forEach(w => {
+    if (w.id === viewId) { w.style.display = 'block'; w.style.width = '100%'; }
+    else { w.style.display = 'none'; w.style.width = '0%'; }
+  })
+
+  // update active_screen_win to point to webview id for controls
+  var webviewEl = document.getElementById(viewId + '-webview')
+  if (webviewEl) active_screen_win = viewId + '-webview'
 }
 
 
