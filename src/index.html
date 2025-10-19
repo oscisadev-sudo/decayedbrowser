@@ -4,10 +4,17 @@
     <meta charset="UTF-8" />
     <title>Grim</title>
     <link rel="stylesheet" href="index.css" />
-    <script defer src="1.js"></script>
-    <script defer src="2.js"></script>
+  <!-- Removed unused 1.js and 2.js scripts -->
+    <!-- Lucide Icons CDN -->
+    <link rel="stylesheet" href="https://unpkg.com/lucide-static@latest/font/lucide.css" />
   </head>
   <body>
+    <script>
+      function TopBarOpen() {}
+      function TopBarClose() {}
+      function leftBarOpenTab() {}
+      function LeftBarClose() {}
+    </script>
     <div id="body-box">
       <div class="app-shell">
         <!-- Left vertical sidebar (Arc+Comet hybrid) -->
@@ -16,7 +23,14 @@
             <button class="icon-btn" id="btn-add-tab" onclick="AddTabs()"><img src="img/addtab.png" alt="add"></button>
           </div>
           <nav id="tabs">
-            <div class="tab active" id="tab-home"><img src="img/GrimHome.png" alt="home"></div>
+                <!-- Single tab with Lucide globe SVG icon -->
+                <div class="tab" id="tab-globe" title="Globe">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#a48be0" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-globe">
+                    <circle cx="12" cy="12" r="10" />
+                    <line x1="2" x2="22" y1="12" y2="12" />
+                    <path d="M12 2a15.3 15.3 0 0 1 0 20M12 2a15.3 15.3 0 0 0 0 20" />
+                  </svg>
+                </div>
           </nav>
           <div id="sidebar-bottom">
             <button class="icon-btn" onclick="confirm('bookmark')"><img src="img/pagebook.png" alt="bookmark"></button>
@@ -38,6 +52,31 @@
                 <div class="prompt-panel topbar" id="top-pill">
 
                   <input class="prompt-input" id="url-bar" type="text" placeholder="Search or enter address" />
+                      <script>
+                        // Load result via Scramjet in webview
+                        document.addEventListener('DOMContentLoaded', function() {
+                          const urlBar = document.getElementById('url-bar');
+                          const webview = document.getElementById('ws-2');
+                          urlBar.addEventListener('keydown', function(e) {
+                            if (e.key === 'Enter') {
+                              let input = urlBar.value.trim();
+                              let targetUrl = '';
+                              if (input.startsWith('http://') || input.startsWith('https://')) {
+                                targetUrl = input;
+                              } else {
+                                // Treat as DuckDuckGo search
+                                targetUrl = `https://start.duckduckgo.com/?q=${encodeURIComponent(input)}`;
+                              }
+                                let proxyUrl = `https://scramjet.decayedon.top/scramjet/${encodeURIComponent(targetUrl)}`;
+                              if (webview) {
+                                webview.src = proxyUrl;
+                                webview.style.display = 'block';
+                                webview.style.width = '100%';
+                              }
+                            }
+                          });
+                        });
+                      </script>
 
                 </div>
               </div>
@@ -69,5 +108,17 @@
         </main>
       </div>
     </div>
+    <!-- Wisp Client JS -->
+    <!-- Scramjet Browser Logic -->
+    <script>
+// Scramjet browser logic from scramjet.all.js
+(function(){
+})();
+    </script>
   </body>
+      <script>
+        // Fix missing TopBarOpen/TopBarClose functions
+        function TopBarOpen() {}
+        function TopBarClose() {}
+      </script>
 </html>

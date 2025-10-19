@@ -1,3 +1,68 @@
+/* Sidebar and tab styles for Lucide icons */
+#sidebar {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100vh;
+  width: 72px;
+  background: #131417;
+  box-shadow: 2px 0 8px #000a;
+}
+
+#sidebar-top {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 16px;
+}
+
+#tabs {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  margin-top: 24px;
+  flex: 1 1 auto;
+}
+
+
+
+.tab {
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 16px;
+  background: none !important;
+  cursor: pointer;
+  box-shadow: none;
+  transition: none;
+}
+
+.tab:hover, .tab:active, .tab:focus {
+  background: none !important;
+}
+
+.tab svg.lucide {
+  width: 32px;
+  height: 32px;
+  stroke: #a48be0;
+  display: block;
+}
+
+.tab i.lucide {
+  font-size: 28px;
+  color: #a48be0;
+  display: block;
+}
+
+#sidebar-bottom {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 16px;
+}
 :root{
   --bg: #07122a; /* deep blue background */
   --panel: rgba(255,255,255,0.03);
