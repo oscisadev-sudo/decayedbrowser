@@ -3,21 +3,14 @@
   <head>
     <meta charset="UTF-8" />
     <title>Grim</title>
-    <link rel="stylesheet" href="index.css" />
-    <link rel="stylesheet" href="https://unpkg.com/lucide-static@latest/font/lucide.css" />
-    <link rel="stylesheet" href="https://unpkg.com/lucide-static@latest/font/lucide.css" />
+  <link rel="stylesheet" href="index.css" />
+  <script src="https://unpkg.com/lucide@latest"></script>
   </head>
   <body>
-    <script>
-      function TopBarOpen() {}
-      function TopBarClose() {}
-      function leftBarOpenTab() {}
-      function LeftBarClose() {}
-    </script>
     <div id="body-box">
       <div class="app-shell">
         
-        <aside id="sidebar" onmouseenter="leftBarOpenTab()" onmouseleave="LeftBarClose()">
+  <aside id="sidebar" onmouseenter="leftBarOpenTab()" onmouseleave="LeftBarClose()">
           <div id="sidebar-top">
             <button class="icon-btn" id="btn-add-tab" onclick="AddTabs()"><img src="img/addtab.png" alt="add"></button>
           </div>
@@ -32,7 +25,6 @@
                 </div>
           </nav>
           <div id="sidebar-bottom">
-            <button class="icon-btn" onclick="confirm('bookmark')"><img src="img/pagebook.png" alt="bookmark"></button>
           </div>
         </aside>
 
@@ -63,58 +55,48 @@
                               if (input.startsWith('http://') || input.startsWith('https://')) {
                                 targetUrl = input;
                               } else {
-                                // Treat as DuckDuckGo search
                                 targetUrl = `https://start.duckduckgo.com/?q=${encodeURIComponent(input)}`;
                               }
                                 let proxyUrl = `https://scramjet.decayedon.top/scramjet/${encodeURIComponent(targetUrl)}`;
-                              if (webview) {
-                                webview.src = proxyUrl;
-                                webview.style.display = 'block';
-                                webview.style.width = '100%';
-                              }
-                            }
-                          });
-                        });
-                      </script>
-
-                </div>
-              </div>
-
-              <div id="nav-right">
-                <div id="win-tray">
-                
-
-                </div>
+                                          webview.src = proxyUrl;
+                                      }
+                                    });
+                                  });
+                                </script>
               </div>
             </div>
-          </header>
-
-          <section id="screen">
-            <section class="window" id="scr-1">
-              
-              <div class="center-prompt" id="home-prompt">
-                <div class="prompt-panel">
-
-
-                  <input class="prompt-input" id="home-search" placeholder="Ask anything. Type @ for mentions and / for shortcuts." />
-
-                </div>
-              </div>
-            </section>
-
-            <section class="window" id="scr-2" style="display:none; width:0%"><webview id="ws-2" src="components/homegrimapppage.html" allowpopups></webview></section>
+            <div id="nav-right">
+              <div id="win-tray"></div>
+            </div>
+          </div>
+        </header>
+        <section id="screen">
+          <section class="window" id="scr-1">
+            <iframe id="results-frame" style="width:100%; height:100%; border:none;"></iframe>
           </section>
-        </main>
-      </div>
+        </section>
+      </main>
     </div>
-    
-    <script>
-(function(){
-})();
-    </script>
-  </body>
-      <script>
-        function TopBarOpen() {}
-        function TopBarClose() {}
-      </script>
+  </div>
+  <script src="client.js"></script>
+  <script>
+    function TopBarOpen() {}
+    function TopBarClose() {}
+    function leftBarOpenTab() {}
+    function LeftBarClose() {}
+    function AddTabs() {}
+    function BackWeb() {
+      const frame = document.getElementById('results-frame');
+      if (frame && frame.contentWindow) frame.contentWindow.history.back();
+    }
+    function ReloadWeb() {
+      const frame = document.getElementById('results-frame');
+      if (frame && frame.contentWindow) frame.contentWindow.location.reload();
+    }
+    function NextWeb() {
+      const frame = document.getElementById('results-frame');
+      if (frame && frame.contentWindow) frame.contentWindow.history.forward();
+    }
+  </script>
+</body>
 </html>
