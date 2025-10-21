@@ -1,0 +1,4 @@
+http://browser.decayedon.top:80 {
+    root * /var/www/DecayedBrowser/src
+    file_server
+}
