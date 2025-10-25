@@ -1,5 +1,5 @@
 
-# DecayedBrowser — A sick af retro web experience
+# DecayedBrowser — A sick af proxy
 
 
 > Bypass your blocker today at browser.decayedon.top
