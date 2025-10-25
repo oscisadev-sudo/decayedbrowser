@@ -7,9 +7,7 @@
   <link rel="stylesheet" href="jobs.css">
   
   <link rel="icon" type="image/png" href="/grim.png">
-  <style>
-   
-  </style>
+  
 </head>
 <body>
   <div id="particles-js"></div>
@@ -25,142 +23,45 @@
             <button id="btn-scram" class="toolbar-shortcut" title="Enable Scram"><i data-lucide="zap"></i></button>
             <button id="btn-incognito" class="toolbar-shortcut" title="Open incognito"><i data-lucide="eye-off"></i></button>
           </div>
-          <input id="addr" class="addr-input" type="text" placeholder="https://discord.gg/WV8cWxYTtQ" />
+          <input id="addr" class="addr-input" type="text" placeholder="Search or enter URL" />
             </div>
 
         <div class="browser-view">
-          <div class="browser-topbar"> <span id="address-top">https://discord.gg/WV8cWxYTtQ</span> </div>
+          <div class="browser-topbar">
+            <div class="tabs" id="tabs">
+              <button id="btn-new-tab" class="tab-new" title="New tab"><i data-lucide="plus"></i></button>
+            </div>
+          </div>
           <iframe id="browser-iframe" class="browser-iframe" src="about:blank" sandbox="allow-scripts allow-same-origin allow-forms"></iframe>
-          <pre id="console" class="browser-console"></pre>
         </div>
 
+
        
-      
-      <script>
-        (function(){
-          const iframe = document.getElementById('browser-iframe');
-          const addr = document.getElementById('addr');
-          const goBtn = document.getElementById('goBtn');
-          const consoleEl = document.getElementById('console');
-          const addressTop = document.getElementById('address-top');
-
-          let historyStack = [];
-          let idx = -1;
-
-          function write(msg){ consoleEl.textContent = msg; }
-
-          function navigate(url, push=true){
-            if (!/^https?:\/\//i.test(url)) url = 'https://' + url;
-            try{
-              if (window.__useScramNavigate) {
-                window.__useScramNavigate(url, iframe, addressTop);
-              } else {
-                iframe.src = url;
-                addressTop.textContent = url;
-              }
-            } catch(e){ write('Navigation error: '+e.message); }
-            if (push){
-              historyStack = historyStack.slice(0, idx+1);
-              historyStack.push(url);
-              idx = historyStack.length - 1;
-            }
-          }
-
-          goBtn && goBtn.addEventListener('click', ()=>{ navigate(addr.value || 'about:blank'); });
-          addr.addEventListener('keydown', e=>{ if (e.key === 'Enter') { navigate(addr.value || 'about:blank'); } });
-
-          const tbBack = document.getElementById('btn-back');
-          const tbForward = document.getElementById('btn-forward');
-          const tbRefresh = document.getElementById('btn-refresh');
-          const tbSettings = document.getElementById('btn-settings');
-          const tbIncognito = document.getElementById('btn-incognito');
-          if (tbBack) tbBack.addEventListener('click', ()=>{ const el = document.getElementById('back'); if (el) el.click(); else write('No back control'); });
-          if (tbForward) tbForward.addEventListener('click', ()=>{ const el = document.getElementById('forward'); if (el) el.click(); else write('No forward control'); });
-          if (tbRefresh) tbRefresh.addEventListener('click', ()=>{ const el = document.getElementById('refresh'); if (el) el.click(); else { write('Refreshing...'); const cur = iframe.src || historyStack[idx] || ''; iframe.src = cur; setTimeout(()=> write('Refreshed.'), 600); } });
-          if (tbSettings) tbSettings.addEventListener('click', ()=>{ alert('Settings placeholder'); });
-          if (tbIncognito) tbIncognito.addEventListener('click', ()=>{ navigate('about:blank'); });
-
-          const tbScram = document.getElementById('btn-scram');
-          if (tbScram) tbScram.addEventListener('click', async ()=>{
-            if (window.initScramjet) {
-              write('Initializing Scramjet...');
-              try{ await window.initScramjet(); write('Scramjet initialized'); }catch(e){ write('Scramjet init failed: '+(e&&e.message?e.message:e)); }
-            } else {
-              write('Scram init not available');
-            }
-          });
-
-          const refreshBtn = document.getElementById('refresh');
-          if (refreshBtn) {
-            refreshBtn.addEventListener('click', ()=>{
-              write('Refreshing...');
-              const cur = iframe.src || historyStack[idx] || '';
-              iframe.src = cur;
-              setTimeout(()=> write('Refreshed.'), 600);
-            });
-          }
-
-          const backBtn = document.getElementById('back');
-          if (backBtn) {
-            backBtn.addEventListener('click', ()=>{
-              if (idx > 0){ idx--; navigate(historyStack[idx], false); write('Back to '+historyStack[idx]); }
-              else write('No back history');
-            });
-          }
-
-          const forwardBtn = document.getElementById('forward');
-          if (forwardBtn) {
-            forwardBtn.addEventListener('click', ()=>{
-              if (idx < historyStack.length-1){ idx++; navigate(historyStack[idx], false); write('Forward to '+historyStack[idx]); }
-              else write('No forward history');
-            });
-          }
-
-          const fsBtn = document.getElementById('fs');
-          if (fsBtn) {
-            fsBtn.addEventListener('click', ()=>{
-              const shell = document.querySelector('.browser-shell');
-              if (document.fullscreenElement) document.exitFullscreen();
-              else shell.requestFullscreen();
-            });
-          }
-
-          // sample initial page
-          navigate('https://duckduckgo.com/?q=hi');
-        })();
-      </script>
-
       </main>
+      
 
-  <nav class="bottom-dock" aria-label="dock">
-    <div class="dock-inner">
-      <button class="dock-btn" title="Home">
-        <img class="dock-logo" src="/grim.png" alt="logo">
-      </button>
-      <button class="dock-btn" title="Home">
-        <i data-lucide="home"></i>
-      </button>
-      <button class="dock-btn" title="Games">
-        <i data-lucide="gamepad"></i>
-      </button>
-      <button class="dock-btn" title="Reading">
-        <i data-lucide="book-open"></i>
-      </button>
-      <button class="dock-btn" title="Chat">
-        <i data-lucide="message-circle"></i>
-      </button>
-      <button class="dock-btn" title="Settings">
-        <i data-lucide="settings"></i>
-      </button>
+
+  <aside class="sidebar" aria-label="sidebar">
+    <div class="group">
+      <div class="icon active" title="Home"><i data-lucide="home"></i><span class="label">Home</span></div>
+      <div class="icon" title="Dashboard"><i data-lucide="grid"></i><span class="label">Dashboard</span></div>
+      <div class="icon" title="Games"><i data-lucide="gamepad"></i><span class="label">Games</span></div>
+      <div class="icon" title="Playline"><i data-lucide="award"></i><span class="label">Playline</span></div>
+      <div class="icon" title="Reading"><i data-lucide="book-open"></i><span class="label">Reading</span></div>
+      <div class="icon" title="Chat"><i data-lucide="message-circle"></i><span class="label">Chat</span></div>
+      <div class="icon" title="Browser"><i data-lucide="monitor"></i><span class="label">Browser</span></div>
+      <div class="icon" title="Search"><i data-lucide="search"></i><span class="label">Search</span></div>
     </div>
-  </nav>
+    <div class="divider" aria-hidden="true"></div>
+    <div class="bottom">
+      <div class="icon" title="Brand"><img src="/grim.png" alt="logo"/></div>
+    </div>
+  </aside>
   
   <script src="stars.js"></script>
   <script src="https://unpkg.com/lucide@latest"></script>
   <script>window.lucide && lucide.createIcons();</script>
-  <!-- Scramjet: load runtime and lightweight init (keeps HTML tidy) -->
-  <script src="/scram/scramjet.all.js"></script>
-  <script src="scram-init.js"></script>
-    
+  <script src="jobs.js"></script>
+  
 </body>
 </html>

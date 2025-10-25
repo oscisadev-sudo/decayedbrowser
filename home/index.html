@@ -7,9 +7,7 @@
   <link rel="stylesheet" href="book.css">
   
   <link rel="icon" type="image/png" href="/grim.png">
-  <style>
-   
-  </style>
+  
 </head>
 <body>
   <canvas id="bg"></canvas>
@@ -17,8 +15,8 @@
       <div class="hero-inner">
         <h1 class="hero-title" style="font-style:italic;" >Welcome to Decayed</h1>
 
-        <form class="hero-search" onsubmit="event.preventDefault();">
-          <input id="hero-input" type="text" style="font-style:italic;" placeholder="Search DuckDuckGo or type a URL" aria-label="search" />
+        <form class="hero-search" id="uv-form">
+          <input id="uv-address" type="text" style="font-style:italic;" placeholder="Search DuckDuckGo or type a URL" aria-label="search" />
         </form>
         <p class="hero-sub" id="hero-quote" style="margin-top:0.1in; font-style:italic;"></p>
 
@@ -30,90 +28,89 @@
       
     </main>
 
-  <nav class="bottom-dock" aria-label="dock">
-    <div class="dock-inner">
-      <button class="dock-btn" title="Home">
-        <img class="dock-logo" src="/grim.png" alt="logo">
-      </button>
-      <button class="dock-btn" title="Home">
-        <i data-lucide="home"></i>
-      </button>
-      <button class="dock-btn" title="Games">
-        <i data-lucide="gamepad"></i>
-      </button>
-      <button class="dock-btn" title="Reading">
-        <i data-lucide="book-open"></i>
-      </button>
-      <button class="dock-btn" title="Chat">
-        <i data-lucide="message-circle"></i>
-      </button>
-      <button class="dock-btn" title="Settings">
-        <i data-lucide="settings"></i>
-      </button>
+  <aside class="sidebar" aria-label="sidebar">
+    <div class="group">
+      <div class="icon active" title="Home"><i data-lucide="home"></i><span class="label">Home</span></div>
+      <div class="icon" title="AI"><i data-lucide="bot"></i><span class="label">DecayedAI</span></div>
+      <div class="icon" title="Games"><i data-lucide="gamepad"></i><span class="label">Games</span></div>
+      <div class="icon" title="Reading"><i data-lucide="book-open"></i><span class="label">Reading</span></div>
+      <div class="icon" title="Chat"><i data-lucide="message-circle"></i><span class="label">Chat</span></div>
+      <div class="icon" title="Browser"><i data-lucide="monitor"></i><span class="label">Browser</span></div>
     </div>
-    
-    <script src="stars.js"></script>
-    <script src="https://unpkg.com/lucide@latest"></script>
-    <script>window.lucide && lucide.createIcons();</script>
-    <script>
-      (function(){
-        const quotes = [
-          "As Seen On PC!",
-          "this message is sponsored by nordvpn",
-          "(not sponsored gng)",
-          "decayed > unblora",
-          "67 💀😭",
-          "join our discord.gg/WV8cWxYTtQ",
-          "Thanks tech and petezah for proxy help"
-        ];
+    <div class="bottom">
+      <div class="icon" title="Home">
+        <img src="/grim.png" alt="logo" style="width:28px;height:28px;border-radius:6px;" />
+      </div>
+    </div>
+  </aside>
 
-        const key = 'heroQuoteIndex';
-        let startIdx = parseInt(localStorage.getItem(key) || '0', 10);
-        if (isNaN(startIdx) || startIdx < 0) startIdx = 0;
-        localStorage.setItem(key, String((startIdx + 1) % quotes.length));
+  <script src="stars.js"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script>window.lucide && lucide.createIcons();</script>
+  <script>
+    (function(){
+      const quotes = [
+        "As Seen On PC!",
+        "this message is sponsored by nordvpn",
+        "(not sponsored gng)",
+        "decayed > unblora",
+        "67 💀😭",
+        "join our discord.gg/WV8cWxYTtQ",
+        "Thanks tech and petezah for proxy help",
+        "six sev- fuh no",
+        "...",
+        "no chatgpt usage here...",
+        "do NOT look at my gpt history",
+        "scramjet sucks",
+        "new number gng (seven six)",
+        "This quote was Vibe Coded",
+        "I NEED HELP WITH SCRAMJET GNG"
+      ];
 
-        const el = document.getElementById('hero-quote');
-        if (!el) return;
+      const key = 'heroQuoteIndex';
+      let startIdx = parseInt(localStorage.getItem(key) || '0', 10);
+      if (isNaN(startIdx) || startIdx < 0) startIdx = 0;
+      localStorage.setItem(key, String((startIdx + 1) % quotes.length));
 
-        const typeSpeed = 40; 
-        const displayMs = 5000; 
+      const el = document.getElementById('hero-quote');
+      if (!el) return;
 
-        function typeText(text) {
-          return new Promise(resolve => {
-            el.textContent = '';
-            let i = 0;
-            function step() {
-              if (i <= text.length) {
-                el.textContent = text.slice(0, i);
-                i++;
-                setTimeout(step, typeSpeed);
-              } else {
-                resolve();
-              }
-            }
-            step();
-          });
-        }
+      const typeSpeed = 40; 
+      const displayMs = 5000; 
 
-        let idx = startIdx;
-        async function loop() {
-          const text = quotes[idx % quotes.length];
-          const start = Date.now();
-          await typeText(text);
-          const typed = Date.now() - start;
-          const wait = Math.max(0, displayMs - typed);
-          await new Promise(r => setTimeout(r, wait));
-          idx = (idx + 1) % quotes.length;
-          // clear quickly before next type
+      function typeText(text) {
+        return new Promise(resolve => {
           el.textContent = '';
-          setTimeout(loop, 120);
-        }
+          let i = 0;
+          function step() {
+            if (i <= text.length) {
+              el.textContent = text.slice(0, i);
+              i++;
+              setTimeout(step, typeSpeed);
+            } else {
+              resolve();
+            }
+          }
+          step();
+        });
+      }
 
-        loop();
-      })();
-    </script>
-  </nav>
+      let idx = startIdx;
+      async function loop() {
+        const text = quotes[idx % quotes.length];
+        const start = Date.now();
+        await typeText(text);
+        const typed = Date.now() - start;
+        const wait = Math.max(0, displayMs - typed);
+        await new Promise(r => setTimeout(r, wait));
+  idx = (idx + 1) % quotes.length;
+  el.textContent = '';
+  setTimeout(loop, 120);
+      }
+
+      loop();
+    })();
+  </script>
   
 </body>
 </html>
-        (function(){
